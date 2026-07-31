@@ -1,2 +1,5 @@
 .vs/
 node_modules/
+
+.postman/
+postman/
