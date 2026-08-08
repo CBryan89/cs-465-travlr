@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { Trip } from '../models/trip';
 import { TripDataService } from '../services/trip-data';
 import { TripCard } from '../trip-card/trip-card';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-trip-listing',
-  imports: [CommonModule, TripCard],
+  imports: [CommonModule, TripCard, RouterLink],
   providers: [TripDataService],
   templateUrl: './trip-listing.html',
   styleUrl: './trip-listing.css',

@@ -1,3 +1,9 @@
+<div class="mb-3">
+  <a routerLink="/add-trip" class="btn btn-primary">
+    Add Trip
+  </a>
+</div>
+
 <div class="row">
   <div *ngFor="let trip of trips()" class="col-3">
     <app-trip-card [trip]="trip"></app-trip-card>

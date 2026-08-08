@@ -21,5 +21,10 @@
        [innerHTML]="trip.description">
     </p>
 
+    <a [routerLink]="['/edit-trip', trip.code]"
+       class="btn btn-primary">
+      Edit Trip
+    </a>
+
   </div>
 </div>

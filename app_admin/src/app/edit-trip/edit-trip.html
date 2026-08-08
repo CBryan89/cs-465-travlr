@@ -1,0 +1,92 @@
+<div class="container">
+  <h2>Edit Trip</h2>
+
+  <form (ngSubmit)="updateTrip()">
+
+    <div class="mb-3">
+      <label for="code" class="form-label">Trip Code</label>
+      <input type="text"
+             class="form-control"
+             id="code"
+             name="code"
+             [(ngModel)]="trip().code"
+             required>
+    </div>
+
+    <div class="mb-3">
+      <label for="name" class="form-label">Trip Name</label>
+      <input type="text"
+             class="form-control"
+             id="name"
+             name="name"
+             [(ngModel)]="trip().name"
+             required>
+    </div>
+
+    <div class="mb-3">
+      <label for="length" class="form-label">Length</label>
+      <input type="text"
+             class="form-control"
+             id="length"
+             name="length"
+             [(ngModel)]="trip().length"
+             required>
+    </div>
+
+    <div class="mb-3">
+      <label for="start" class="form-label">Start Date</label>
+      <input type="text"
+             class="form-control"
+             id="start"
+             name="start"
+             [(ngModel)]="trip().start"
+             required>
+    </div>
+
+    <div class="mb-3">
+      <label for="resort" class="form-label">Resort</label>
+      <input type="text"
+             class="form-control"
+             id="resort"
+             name="resort"
+             [(ngModel)]="trip().resort"
+             required>
+    </div>
+
+    <div class="mb-3">
+      <label for="perPerson" class="form-label">Price Per Person</label>
+      <input type="text"
+             class="form-control"
+             id="perPerson"
+             name="perPerson"
+             [(ngModel)]="trip().perPerson"
+             required>
+    </div>
+
+    <div class="mb-3">
+      <label for="image" class="form-label">Image</label>
+      <input type="text"
+             class="form-control"
+             id="image"
+             name="image"
+             [(ngModel)]="trip().image"
+             required>
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea class="form-control"
+                id="description"
+                name="description"
+                rows="4"
+                [(ngModel)]="trip().description"
+                required>
+      </textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+      Update Trip
+    </button>
+
+  </form>
+</div>
