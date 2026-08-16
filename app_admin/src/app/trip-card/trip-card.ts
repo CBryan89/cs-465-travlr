@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Trip } from '../models/trip';
 import { RouterLink } from '@angular/router';
+
+import { Trip } from '../models/trip';
+import { Authentication } from '../services/authentication';
 
 @Component({
   selector: 'app-trip-card',
@@ -10,5 +12,14 @@ import { RouterLink } from '@angular/router';
   styleUrl: './trip-card.css',
 })
 export class TripCard {
+
   @Input({ required: true }) trip!: Trip;
+
+  constructor(
+    private authenticationService: Authentication
+  ) { }
+
+  public isLoggedIn(): boolean {
+    return this.authenticationService.isLoggedIn();
+  }
 }

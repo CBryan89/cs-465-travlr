@@ -20,7 +20,7 @@ export class AddTrip {
     code: '',
     name: '',
     length: '',
-    start: new Date(),
+    start: new Date().toISOString().split('T')[0] as any,
     resort: '',
     perPerson: '',
     image: '',
