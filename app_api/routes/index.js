@@ -5,56 +5,39 @@ const jwt = require('jsonwebtoken'); // Enable JSON Web Tokens
 const tripsController = require('../controllers/trips');
 const authController = require('../controllers/authentication');
 
-// Method to authenticate our JWT
+// Middleware to authenticate JSON Web Tokens
 function authenticateJWT(req, res, next) {
-    // console.log('In Middleware');
-
     const authHeader = req.headers['authorization'];
-    // console.log('Auth Header: ' + authHeader);
 
-    if(authHeader == null)
-    {
-        console.log('Auth Header Required but NOT PRESENT!');
-        return res.sendStatus(401);
+    // Authorization header must be present
+    if (!authHeader) {
+        return res.status(401).json({
+            message: 'Authorization header required.'
+        });
     }
 
-    let headers = authHeader.split(' ');
-    if(headers.length < 1)
-    {
-        console.log('Not enough tokens in Auth Header: ' +
-            headers.length);
-        return res.sendStatus(501);
+    // Expected format: Bearer <token>
+    const parts = authHeader.split(' ');
+
+    if (parts.length !== 2 || parts[0] !== 'Bearer' || !parts[1]) {
+        return res.status(401).json({
+            message: 'Invalid authorization header format.'
+        });
     }
 
-    const token = authHeader.split(' ')[1];
-    // console.log('Token: ' + token);
+    const token = parts[1];
 
-    if(token == null)
-    {
-        console.log('Null Bearer Token');
-        return res.sendStatus(401);
-    }
-
-    // console.log(process.env.JWT_SECRET);
-    // console.log(jwt.decode(token));
-    const verified = jwt.verify(
-        token,
-        process.env.JWT_SECRET,
-        (err, verified) => {
-            if(err)
-            {
-                return res
-                    .sendStatus(401)
-                    .json('Token Validation Error!');
-            }
-
-            // Set the auth param to the decoded object
-            req.auth = verified;
+    // Verify the JWT before allowing access to the protected route
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({
+                message: 'Invalid or expired authentication token.'
+            });
         }
-    );
 
-    // We need to continue or this will hang forever
-    next();
+        req.auth = decoded;
+        next();
+    });
 }
 
 // Register a new user
@@ -93,9 +76,10 @@ router.put(
     tripsController.tripsUpdateTrip
 );
 
-// DELETE a trip by trip code
+// DELETE a trip by trip code - requires authentication
 router.delete(
     '/trips/:tripCode',
+    authenticateJWT,
     tripsController.tripsDeleteTrip
 );
 

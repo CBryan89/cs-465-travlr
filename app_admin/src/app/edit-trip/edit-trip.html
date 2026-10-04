@@ -1,16 +1,43 @@
 <div class="container">
   <h2>Edit Trip</h2>
 
-  <form (ngSubmit)="updateTrip()">
+  @if (errorMessage) {
+  <div class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
+  }
+
+  <form #tripForm="ngForm" (ngSubmit)="updateTrip()">
 
     <div class="mb-3">
       <label for="code" class="form-label">Trip Code</label>
+
       <input type="text"
              class="form-control"
              id="code"
              name="code"
              [(ngModel)]="trip().code"
-             required>
+             #code="ngModel"
+             required
+             minlength="3"
+             maxlength="10"
+             pattern="[A-Za-z0-9]+">
+
+      @if (code.invalid && (code.dirty || code.touched)) {
+      <div class="text-danger mt-1">
+        @if (code.errors?.['required']) {
+        Trip code is required.
+        }
+
+        @if (code.errors?.['minlength']) {
+        Trip code must be at least 3 characters.
+        }
+
+        @if (code.errors?.['pattern']) {
+        Trip code can only contain letters and numbers.
+        }
+      </div>
+      }
     </div>
 
     <div class="mb-3">
@@ -20,6 +47,7 @@
              id="name"
              name="name"
              [(ngModel)]="trip().name"
+             maxlength="100"
              required>
     </div>
 
@@ -30,6 +58,7 @@
              id="length"
              name="length"
              [(ngModel)]="trip().length"
+             maxlength="50"
              required>
     </div>
 
@@ -50,17 +79,33 @@
              id="resort"
              name="resort"
              [(ngModel)]="trip().resort"
+             maxlength="100"
              required>
     </div>
 
     <div class="mb-3">
       <label for="perPerson" class="form-label">Price Per Person</label>
+
       <input type="text"
              class="form-control"
              id="perPerson"
              name="perPerson"
              [(ngModel)]="trip().perPerson"
-             required>
+             #perPerson="ngModel"
+             required
+             pattern="\$?[0-9]+(\.[0-9]{1,2})?">
+
+      @if (perPerson.invalid && (perPerson.dirty || perPerson.touched)) {
+      <div class="text-danger mt-1">
+        @if (perPerson.errors?.['required']) {
+        Price per person is required.
+        }
+
+        @if (perPerson.errors?.['pattern']) {
+        Price must be a valid positive amount.
+        }
+      </div>
+      }
     </div>
 
     <div class="mb-3">
@@ -70,6 +115,7 @@
              id="image"
              name="image"
              [(ngModel)]="trip().image"
+             maxlength="255"
              required>
     </div>
 
@@ -80,11 +126,13 @@
                 name="description"
                 rows="4"
                 [(ngModel)]="trip().description"
-                required>
-      </textarea>
+                maxlength="1000"
+                required></textarea>
     </div>
 
-    <button type="submit" class="btn btn-primary">
+    <button type="submit"
+            class="btn btn-primary"
+            [disabled]="tripForm.invalid">
       Update Trip
     </button>
 
